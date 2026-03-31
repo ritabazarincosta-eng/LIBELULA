@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Home</title>
+
+<style>
+
+/* FUNDO COM LOGO */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+
+    background:
+        linear-gradient(rgba(20,20,40,0.85), rgba(20,20,40,0.85)),
+        url("logo.png") no-repeat center;
+
+    background-size: 600px;
+    background-attachment: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* CONTAINER */
+.container {
+    width: 400px;
+    padding: 40px;
+
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+    text-align: center;
+    color: white;
+}
+
+/* TÍTULO */
+h1 {
+    margin-bottom: 30px;
+    color: #00d4ff;
+}
+
+/* BOTÕES GRANDES */
+.menu-btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    margin: 15px 0;
+
+    background: linear-gradient(45deg, #00d4ff, #0077ff);
+    border-radius: 12px;
+
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+
+    transition: 0.3s;
+}
+
+/* HOVER */
+.menu-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #00d4ff;
+}
+
+/* LOGO TOPO */
+.logo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+
+    border: 3px solid rgba(255,255,255,0.5);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* RODAPÉ */
+.footer {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <img src="logo.png">
+    </div>
+
+    <h1>Painel</h1>
+
+    <a href="cadastro.html" class="menu-btn">➕ Novo Cadastro</a>
+    <a href="lista.html" class="menu-btn">📋 Ver Cadastros</a>
+
+</div>
+
+<div class="footer">BY FABIO COSTA • lobofc_</div>
+
+</body>
+</html>
