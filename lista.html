@@ -2,8 +2,10 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Consulta</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CONSULTA</title>
 <style>
 
 /* FUNDO */
@@ -77,12 +79,6 @@ th {
     color: #00d4ff;
 }
 
-/* BOTÃO EDITAR */
-.edit-btn {
-    cursor: pointer;
-    font-size: 18px;
-}
-
 /* RODAPÉ */
 .footer {
     position: fixed;
@@ -90,6 +86,55 @@ th {
     right: 15px;
     color: rgba(255,255,255,0.6);
     font-size: 12px;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background: rgba(20,20,40,0.95);
+    margin: 5% auto;
+    padding: 25px;
+    width: 600px;
+    max-width: 90%;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+.fechar {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.modal-content p {
+    margin: 8px 0;
+}
+
+.acoes {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.acoes button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #00d4ff, #5a2e8c);
+    color: white;
+    cursor: pointer;
 }
 
 </style>
@@ -123,11 +168,31 @@ th {
 
 <div class="footer">BY FABIO COSTA • lobofc_</div>
 
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+
+    <span class="fechar" onclick="fecharModal()">✖</span>
+
+    <h2>Ficha do Cliente</h2>
+
+    <div id="conteudoModal"></div>
+
+    <div class="acoes">
+      <button onclick="editarAtual()">✏️ Editar</button>
+      <button onclick="fecharModal()">Fechar</button>
+    </div>
+
+  </div>
+</div>
+
 <script>
 
 const scriptURL = "https://script.google.com/macros/s/AKfycby7U6ppM26VDbg6wyVB9VPxOKo_lwcaDP-0E4NSBXkpX8zeRUM1XXuuMAsl1bh5XIM0/exec";
 
-// 🔥 CARREGAR TODOS
+let idAtual = null;
+
+// 🔥 CARREGAR
 function carregar(){
     fetch(scriptURL)
     .then(res => res.json())
@@ -148,7 +213,7 @@ function buscar(){
     .then(data => montarTabela(data));
 }
 
-// 📋 MONTAR TABELA
+// 📋 TABELA
 function montarTabela(data){
     let html = "";
 
@@ -159,7 +224,9 @@ function montarTabela(data){
             <td>${item.idade}</td>
             <td>${item.motivo_atendimento}</td>
             <td>
-                <span class="edit-btn" onclick="editar(${item.id})">✏️</span>
+                <span onclick="ver(${item.id})" style="cursor:pointer;">👁️</span>
+                &nbsp;
+                <span onclick="editar(${item.id})" style="cursor:pointer;">✏️</span>
             </td>
         </tr>
         `;
@@ -168,7 +235,44 @@ function montarTabela(data){
     document.getElementById("tabela").innerHTML = html;
 }
 
-// ✏️ EDITAR (FUNCIONANDO COM POST)
+// 👁️ VISUALIZAR
+async function ver(id){
+
+    idAtual = id;
+
+    let res = await fetch(`${scriptURL}?id=${id}`);
+    let d = await res.json();
+
+    let html = `
+    <p><b>Nome:</b> ${d.nome_cliente}</p>
+    <p><b>Nascimento:</b> ${d.data_nascimento}</p>
+    <p><b>Idade:</b> ${d.idade}</p>
+
+    <p><b>Motivo:</b><br>${d.motivo_atendimento}</p>
+
+    <p><b>Doença:</b> ${d.doenca_cronica}</p>
+    <p><b>Vício:</b> ${d.vicio_compulsao}</p>
+
+    <p><b>Tratamento:</b> ${d.tratamento_atual}</p>
+    <p><b>Início:</b> ${d.inicio_tratamento}</p>
+    <p><b>Término:</b> ${d.termino_tratamento}</p>
+    <p><b>Duração:</b> ${d.duracao_tratamento}</p>
+
+    <p><b>Mesas:</b> ${d.mesas_utilizadas}</p>
+
+    <p><b>Sugestões:</b><br>${d.sugestoes_finais}</p>
+    `;
+
+    document.getElementById("conteudoModal").innerHTML = html;
+    document.getElementById("modal").style.display = "block";
+}
+
+// ❌ FECHAR
+function fecharModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+// ✏️ EDITAR
 async function editar(id){
 
     let res = await fetch(`${scriptURL}?id=${id}`);
@@ -178,14 +282,6 @@ async function editar(id){
     let data = prompt("Data nascimento:", dados.data_nascimento);
     let idade = prompt("Idade:", dados.idade);
     let motivo = prompt("Motivo:", dados.motivo_atendimento);
-    let doenca = prompt("Doença:", dados.doenca_cronica);
-    let vicio = prompt("Vício:", dados.vicio_compulsao);
-    let tratamento = prompt("Tratamento:", dados.tratamento_atual);
-    let inicio = prompt("Início:", dados.inicio_tratamento);
-    let termino = prompt("Término:", dados.termino_tratamento);
-    let duracao = prompt("Duração:", dados.duracao_tratamento);
-    let mesas = prompt("Mesas:", dados.mesas_utilizadas);
-    let sugestoes = prompt("Sugestões:", dados.sugestoes_finais);
 
     if(!nome) return;
 
@@ -197,21 +293,27 @@ async function editar(id){
             nome_cliente: nome,
             data_nascimento: data,
             idade: idade,
-            motivo_atendimento: motivo,
-            doenca_cronica: doenca,
-            vicio_compulsao: vicio,
-            tratamento_atual: tratamento,
-            inicio_tratamento: inicio,
-            termino_tratamento: termino,
-            duracao_tratamento: duracao,
-            mesas_utilizadas: mesas,
-            sugestoes_finais: sugestoes
+            motivo_atendimento: motivo
         })
     })
     .then(() => {
-        alert("Atualizado completo!");
+        alert("Atualizado!");
         carregar();
     });
+}
+
+// EDITAR PELO MODAL
+function editarAtual(){
+    fecharModal();
+    editar(idAtual);
+}
+
+// FECHAR CLICANDO FORA
+window.onclick = function(event) {
+    let modal = document.getElementById("modal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
 // 🚀 INICIAR
