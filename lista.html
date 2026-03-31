@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Consulta</title>
+
+<style>
+
+/* FUNDO */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+
+    background:
+        linear-gradient(rgba(20,20,40,0.85), rgba(20,20,40,0.85)),
+        url("logo.png") no-repeat center;
+
+    background-size: 600px;
+    background-attachment: fixed;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+    color: white;
+}
+
+/* TÍTULO */
+h2 {
+    text-align: center;
+    color: #00d4ff;
+}
+
+/* BUSCA */
+.search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+}
+
+.search button {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    background: #00d4ff;
+    cursor: pointer;
+}
+
+/* TABELA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+th {
+    color: #00d4ff;
+}
+
+/* BOTÃO EDITAR */
+.edit-btn {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* RODAPÉ */
+.footer {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Consulta de Cadastros</h2>
+
+<div class="search">
+    <input id="busca" placeholder="Buscar por nome...">
+    <button onclick="buscar()">Buscar</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Nome</th>
+<th>Idade</th>
+<th>Motivo</th>
+<th>Ação</th>
+</tr>
+</thead>
+
+<tbody id="tabela"></tbody>
+</table>
+
+</div>
+
+<div class="footer">BY FABIO COSTA • lobofc_</div>
+
+<script>
+
+const scriptURL = "https://script.google.com/macros/s/AKfycby7U6ppM26VDbg6wyVB9VPxOKo_lwcaDP-0E4NSBXkpX8zeRUM1XXuuMAsl1bh5XIM0/exec";
+
+// 🔥 CARREGAR TODOS
+function carregar(){
+    fetch(scriptURL)
+    .then(res => res.json())
+    .then(data => montarTabela(data));
+}
+
+// 🔍 BUSCAR
+function buscar(){
+    let nome = document.getElementById("busca").value.trim();
+
+    if(nome === ""){
+        carregar();
+        return;
+    }
+
+    fetch(`${scriptURL}?nome=${nome}`)
+    .then(res => res.json())
+    .then(data => montarTabela(data));
+}
+
+// 📋 MONTAR TABELA
+function montarTabela(data){
+    let html = "";
+
+    data.forEach(item => {
+        html += `
+        <tr>
+            <td>${item.nome_cliente}</td>
+            <td>${item.idade}</td>
+            <td>${item.motivo_atendimento}</td>
+            <td>
+                <span class="edit-btn" onclick="editar(${item.id})">✏️</span>
+            </td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("tabela").innerHTML = html;
+}
+
+// ✏️ EDITAR (FUNCIONANDO COM POST)
+async function editar(id){
+
+    let res = await fetch(`${scriptURL}?id=${id}`);
+    let dados = await res.json();
+
+    let nome = prompt("Nome:", dados.nome_cliente);
+    let data = prompt("Data nascimento:", dados.data_nascimento);
+    let idade = prompt("Idade:", dados.idade);
+    let motivo = prompt("Motivo:", dados.motivo_atendimento);
+    let doenca = prompt("Doença:", dados.doenca_cronica);
+    let vicio = prompt("Vício:", dados.vicio_compulsao);
+    let tratamento = prompt("Tratamento:", dados.tratamento_atual);
+    let inicio = prompt("Início:", dados.inicio_tratamento);
+    let termino = prompt("Término:", dados.termino_tratamento);
+    let duracao = prompt("Duração:", dados.duracao_tratamento);
+    let mesas = prompt("Mesas:", dados.mesas_utilizadas);
+    let sugestoes = prompt("Sugestões:", dados.sugestoes_finais);
+
+    if(!nome) return;
+
+    fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({
+            acao: "editar",
+            id: id,
+            nome_cliente: nome,
+            data_nascimento: data,
+            idade: idade,
+            motivo_atendimento: motivo,
+            doenca_cronica: doenca,
+            vicio_compulsao: vicio,
+            tratamento_atual: tratamento,
+            inicio_tratamento: inicio,
+            termino_tratamento: termino,
+            duracao_tratamento: duracao,
+            mesas_utilizadas: mesas,
+            sugestoes_finais: sugestoes
+        })
+    })
+    .then(() => {
+        alert("Atualizado completo!");
+        carregar();
+    });
+}
+
+// 🚀 INICIAR
+carregar();
+
+</script>
+
+</body>
+</html>

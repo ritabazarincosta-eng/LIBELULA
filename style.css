@@ -1,0 +1,93 @@
+<style>
+
+/* FUNDO COM LOGO */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+
+    background:
+        linear-gradient(rgba(20,20,40,0.75), rgba(20,20,40,0.75)),
+        url("logo.png") no-repeat center;
+
+    background-size: 500px;
+    background-attachment: fixed;
+}
+
+/* CONTAINER (AGORA VISÍVEL) */
+.container {
+    max-width: 850px;
+    margin: 60px auto;
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.92); /* 🔥 AJUSTE IMPORTANTE */
+    border-radius: 15px;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* TÍTULO */
+h2 {
+    text-align: center;
+    font-size: 26px;
+    color: #5a2e8c;
+}
+
+/* SUBTÍTULO */
+h3 {
+    margin-top: 20px;
+    color: #333;
+}
+
+/* INPUTS */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+
+    border-radius: 8px;
+    border: 1px solid #ccc;
+
+    box-sizing: border-box;
+}
+
+/* BOTÃO */
+button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 15px;
+
+    background: linear-gradient(45deg, #5a2e8c, #2c7a7b);
+    border: none;
+    border-radius: 10px;
+
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ASSINATURA */
+.footer {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    color: white;
+    font-size: 12px;
+}
+
+.top-logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.top-logo img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+
+    border-radius: 50%; /* 🔥 deixa redondo */
+    border: 3px solid white;
+
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+</style>

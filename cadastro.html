@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Novo Cadastro</title>
+
+<style>
+
+/* FUNDO PREMIUM */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+
+    background:
+        linear-gradient(rgba(20,20,40,0.85), rgba(20,20,40,0.85)),
+        url("logo.png") no-repeat center;
+
+    background-size: 500px;
+    background-attachment: fixed;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+    color: white;
+}
+
+/* LOGO TOPO */
+.top-logo {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.top-logo img {
+    width: 80px;
+    border-radius: 50%;
+    border: 2px solid #00d4ff;
+}
+
+/* TÍTULO */
+h2 {
+    text-align: center;
+    color: #00d4ff;
+}
+
+h3 {
+    margin-top: 20px;
+    color: #ccc;
+}
+
+/* INPUTS */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+textarea {
+    min-height: 80px;
+}
+
+/* PLACEHOLDER */
+input::placeholder,
+textarea::placeholder {
+    color: #bbb;
+}
+
+/* GRID */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* BOTÃO */
+button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 15px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: linear-gradient(45deg, #00d4ff, #5a2e8c);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.03);
+}
+
+/* RODAPÉ */
+.footer {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="top-logo">
+    <img src="logo.png" alt="Logo">
+</div>
+
+<h2>Novo Cadastro</h2>
+
+<form id="form">
+
+<h3>Informações do Cliente</h3>
+
+<input name="nome_cliente" placeholder="Nome Completo" required>
+
+<div class="grid-2">
+    <input type="date" name="data_nascimento">
+    <input type="number" name="idade" placeholder="Idade">
+</div>
+
+<h3>Detalhes da Sessão</h3>
+<textarea name="motivo_atendimento" placeholder="Motivo" required></textarea>
+
+<h3>Histórico</h3>
+
+<div class="grid-2">
+    <input name="doenca_cronica" placeholder="Doença Crônica">
+    <input name="vicio_compulsao" placeholder="Vício">
+</div>
+
+<h3>Tratamento</h3>
+
+<input name="tratamento_atual" placeholder="Tratamento">
+
+<div class="grid-2">
+    <input type="date" name="inicio_tratamento">
+    <input type="date" name="termino_tratamento">
+</div>
+
+<input name="duracao_tratamento" placeholder="Duração">
+
+<h3>Mesas</h3>
+<input name="mesas_utilizadas" placeholder="Mesas Utilizadas">
+
+<h3>Sugestões</h3>
+<textarea name="sugestoes_finais" placeholder="Sugestões finais"></textarea>
+
+<button type="submit">Cadastrar</button>
+
+</form>
+
+</div>
+
+<div class="footer">BY FABIO COSTA • lobofc_</div>
+
+<script>
+
+const scriptURL = "https://script.google.com/macros/s/AKfycby7U6ppM26VDbg6wyVB9VPxOKo_lwcaDP-0E4NSBXkpX8zeRUM1XXuuMAsl1bh5XIM0/exec";
+
+// 🚀 ENVIO DO FORM
+document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    fetch(scriptURL, {
+        method: "POST",
+        body: formData
+    })
+    .then(() => {
+        alert("Cadastro realizado com sucesso!");
+        document.getElementById("form").reset();
+    });
+});
+
+</script>
+
+</body>
+</html>
